@@ -15,6 +15,8 @@
 #import "JTSImageViewController.h"
 #import "JTSImageInfo.h"
 
+//#define CLIENT_ID @"95e979899d4eaafe74d431898866adc2f5313f0d5e72839c1101faffa547455c" for unsplash
+//URL api.unsplash.com/photos/?client_id=%@&page=%d
 #define CLIENT_ID @"5016533-e83d4fa58ef5fcafc46b14aa1"
 
 @interface ImageGalleryController () {
@@ -36,7 +38,6 @@
     [self loadImages];
 }
 
-
 -(void)loadImages {
     if(isLoading) {
         return;
@@ -50,15 +51,19 @@
         //NSLog(@"JSON: %@", responseObject);
         isLoading = NO;
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        NSArray *hits = [responseObject valueForKey:@"hits"];
-        for(NSDictionary *imgData in hits) {
+        /*
+         if we will use unsplash API
+        for(NSDictionary *imgData in responseObject) {
             Image *img = [Image new];
-            /*
-             if we will use unsplash API
             img.imageId = [imgData valueForKey:@"id"];
             img.imageURLRaw = [[imgData valueForKey:@"urls"] valueForKey:@"raw"];
             img.imageURLThumb = [[imgData valueForKey:@"urls"] valueForKey:@"thumb"];
-             */
+            [images addObject:img];
+        }
+         */
+        NSArray *hits = [responseObject valueForKey:@"hits"];
+        for(NSDictionary *imgData in hits) {
+            Image *img = [Image new];
             img.imageId = [imgData valueForKey:@"id"];
             img.imageURLRaw = [imgData valueForKey:@"previewURL"];
             img.imageURLThumb = [imgData valueForKey:@"webformatURL"];
