@@ -15,9 +15,9 @@
 #import "JTSImageViewController.h"
 #import "JTSImageInfo.h"
 
-//#define CLIENT_ID @"95e979899d4eaafe74d431898866adc2f5313f0d5e72839c1101faffa547455c" for unsplash
-//URL api.unsplash.com/photos/?client_id=%@&page=%d
-#define CLIENT_ID @"5016533-e83d4fa58ef5fcafc46b14aa1"
+
+//#define URL @"https://api.unsplash.com/photos/?client_id=95e979899d4eaafe74d431898866adc2f5313f0d5e72839c1101faffa547455c"
+#define URL @"https://pixabay.com/api/?key=5016533-e83d4fa58ef5fcafc46b14aa1"
 
 @interface ImageGalleryController () {
     int pageNumber;
@@ -47,7 +47,7 @@
     }
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [manager GET:[NSString stringWithFormat:@"https://pixabay.com/api/?key=%@&page=%d",CLIENT_ID,pageNumber] parameters:NULL success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [manager GET:[NSString stringWithFormat:@"%@&page=%d",URL,pageNumber] parameters:NULL success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         //NSLog(@"JSON: %@", responseObject);
         isLoading = NO;
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -69,6 +69,7 @@
             img.imageURLThumb = [imgData valueForKey:@"webformatURL"];
             [images addObject:img];
         }
+        
         [_ImageCollectionView reloadData];
         //NSLog(@"%@",images);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
